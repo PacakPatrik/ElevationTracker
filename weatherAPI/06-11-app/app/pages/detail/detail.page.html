@@ -1,0 +1,204 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">detail</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+
+  <div class="sideBySide">
+    <h1 class="header"> {{ allData.name.common }}</h1>
+    <img class="detailImage" src="{{ imageURL }}">
+  </div>
+
+  <div id="columns">
+
+   
+    <div id="right">
+      <caption>WEEK START</caption>
+      <h2>{{ startOfWeek }}</h2>
+
+      <caption>REGION</caption>
+      <h2>{{ region }}</h2>
+
+      <caption>POPULATION</caption>
+      <h2>{{ population }}</h2>
+    </div>
+
+
+    <div id="left">
+      <caption>WEEK START</caption>
+      <h2>{{ startOfWeek }}</h2>
+
+      <caption>REGION</caption>
+      <h2>{{ region }}</h2>
+
+      <caption>POPULATION</caption>
+      <h2>{{ population }}</h2>
+
+    </div>
+
+
+    <!---
+    <div id="left">
+
+      <caption>CITY</caption>
+      <h2>Data</h2>
+
+      <caption>CITY</caption>
+      <h2>Data</h2>
+
+      <caption>CITY</caption>
+      <h2>Data</h2>
+
+      <caption>CITY</caption>
+      <h2>Data</h2>
+    </div>
+  --->
+
+  </div>
+
+
+  <style>
+
+    .sideBySide {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+  .detailImage {
+      width: 200px;
+  }
+
+  .header {
+    font-size: 4rem; /* 4 * 16px */
+    font-weight: bold;
+    color: #3498db;
+    background: linear-gradient(to left, #3498db,  #2980b9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-left: 1rem;
+    margin-right: 3rem;
+  }
+
+
+  #columns div h2 {
+    margin: 1rem;
+    background: #34495e;
+    width: 12rem;
+    border-radius: 6px;
+    padding: 0.3rem;
+  }
+
+
+  #columns {
+    display: flex;
+  }
+
+  /* less than 700px make 1 column */
+
+  @media only screen and (max-width: 700px){
+    #columns {
+      flex-direction: column;
+    }
+  }
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /*   .sideBySide {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+     
+    }
+
+    .header {
+      color: #3498db;
+      font-weight: bold;
+      background: linear-gradient(to left, #3498db, rgb(78, 78, 216));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 4rem;
+      margin-left: 1rem;
+      margin-right: 3rem;
+    }
+
+    .detailImage {
+      width: 200px;
+      height: 200px;
+
+      object-fit: cover;
+      border-radius: 50%;
+     
+    }
+
+
+    #columns {
+      display: flex;
+      width: 50%;
+     
+    }
+
+
+    #columns div h2 {
+      margin: 1rem;
+      background: #34495e;
+      width: 12rem;
+      border-radius: 6px;
+      padding: 0.3rem;
+    }
+
+
+    @media only screen and (max-width: 700px){
+      #columns {
+        flex-direction: column;
+      }
+    }
+
+*/
+
+  </style>
+
+
+
+
+
+<!---
+  <div>
+{{myIframe}}
+
+  </div>
+--->
+  
+</ion-content>

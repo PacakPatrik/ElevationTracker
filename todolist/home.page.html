@@ -1,0 +1,39 @@
+<ion-content [fullscreen]="true">
+  <div id="container">
+
+
+    <ion-item>
+
+      <ion-input [(ngModel)] = "newTask" placeholder="Enter a task"></ion-input>
+
+      <ion-button 
+      shape="round"
+      (click) = "addTask()">
+      Increase
+     </ion-button>
+
+    </ion-item>
+
+    
+     <ion-list>
+      <ion-item *ngFor="let task of tasks">
+        {{ task }}
+      </ion-item>
+
+     </ion-list>
+
+
+
+
+
+
+    
+
+
+   
+
+
+  
+  
+  </div>
+</ion-content>

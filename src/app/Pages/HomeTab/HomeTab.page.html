@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+  <ion-header collapse="condense" >
+    <ion-toolbar >
+      <ion-title size="large">Home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid class="row-container">
+    <!-- First Row -->
+    <ion-row class="row-item">
+      <ion-col size="12" class="center">
+        <ion-img src="/assets/images/mountain-icon.png" class="mountain-icon" />
+
+      </ion-col>
+      <p class="current-elevation">Current elevation:</p>
+    </ion-row>
+
+    <ion-row class="row-item">
+      <ion-col size="12">
+        <div class="ion-text-center">
+           <p class="elevation-text">
+             1234 m.n.m
+           </p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <!-- Second Row -->
+    <ion-row class="row-item">
+      <ion-col size="12" class="ion-text-center">
+        <ion-button color="success">
+          <ion-icon name="disc-outline" (click)="startTracking()"></ion-icon>
+          Start tracking
+          {{data}}
+        </ion-button>
+      </ion-col>
+      <ion-col size="12" class="ion-text-center">
+        <!-- <ion-button color="danger">
+           <ion-icon name="stop-circle-outline"></ion-icon>
+           Stop tracking
+         </ion-button>-->
+       </ion-col>
+     </ion-row>
+
+     <!-- Third Row -->
+
+  </ion-grid>
+  <!-- Tlačítko pro získání dat ruční cestou -->
+  <!-- funkce fetch vloží získané data (async) do proměnné data vypsané níže -->
+
+  <!-- Vypisuji obsah, co obsahuje proměnná data -->
+  <!-- Před zmářknutím tlačítka obsahuje pouze {} - prízdný objekt, proto se níže nacházejí podmínky -->
+  <!-- Proměnná weather$ obsahuje Observable - což lze získav skrze .subscribe -->
+  <!-- .subscribe (co lze provést na controlleru) je zde nahrazen pomocí pipe async -->
+  <!-- Pipe async lze použít v podmínce (získá asynchroní data), jelikžo provede .subscribe na pozadí -->
+  <!-- Dokud se data z weather$ nevrací, je vraceno false, v momentě kdy se data získají ze serveru, vrátí se data -->
+  <!-- Data jsou vloženy skrze vlastnost *ngIf do proměnné let weather, kteoru mohu použít dále v kódu (pouze uvnitř podmínky) -->
+  <!-- Data vloženy do proměnné let weather, přebírají stejný datový typ. weather$: Observable<any> >>> weather: any -->
+  <!-- Pipe je vnitře podobná jako serviska - jedná se o podobné řešení -->
+</ion-content>

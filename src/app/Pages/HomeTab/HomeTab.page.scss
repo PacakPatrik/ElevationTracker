@@ -1,0 +1,38 @@
+ion-content{
+  --background: url("~src/assets/images/mountain (3).jpg") 0 0/100% 100% no-repeat;
+}
+.custom-content {
+  height: 100%;
+}
+
+.row-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.row-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.elevation-text{
+  font-size: xxx-large;
+  font-weight: bold;
+}
+.mountain-icon
+{
+  width: 20%;
+  height: 20%;
+}
+.center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.current-elevation{
+  font-size: x-large;
+  font-weight: bold;
+}
