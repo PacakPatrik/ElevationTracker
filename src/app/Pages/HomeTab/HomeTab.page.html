@@ -26,9 +26,13 @@
     <ion-row class="row-item">
       <ion-col size="12">
         <div class="ion-text-center">
-           <p class="elevation-text">
-             1234 m.n.m
-           </p>
+          <ng-container *ngIf="elevation$ | async as elevation; else loadingOrPlaceholder">
+            <p class="elevation-text">{{ elevation?.results?.[0]?.elevation}} m.n.m</p>
+          </ng-container>
+
+          <ng-template #loadingOrPlaceholder>
+            <p class="loading-text">Loading...</p>
+          </ng-template>
         </div>
       </ion-col>
     </ion-row>
@@ -36,10 +40,9 @@
     <!-- Second Row -->
     <ion-row class="row-item">
       <ion-col size="12" class="ion-text-center">
-        <ion-button color="success">
-          <ion-icon name="disc-outline" (click)="startTracking()"></ion-icon>
+        <ion-button color="success" (click)="startTracking()">
+          <ion-icon name="disc-outline"></ion-icon>
           Start tracking
-          {{data}}
         </ion-button>
       </ion-col>
       <ion-col size="12" class="ion-text-center">

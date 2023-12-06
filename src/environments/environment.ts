@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: "https://api.opentopodata.org/v1/eudem25m/?locations=",
+  baseUrl: "https://api.open-elevation.com/api/v1/lookup?locations=",
 };
 
 /*
