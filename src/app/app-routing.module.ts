@@ -5,7 +5,16 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'Settings',
+    loadChildren: () => import('./Pages/Settings/settings.module').then(m => m.SettingsPageModule)
+  },
+  {
+    path: 'Settings',
+    loadChildren: () => import('./Pages/Settings/settings.module').then(m => m.SettingsPageModule)
   }
+
 ];
 @NgModule({
   imports: [

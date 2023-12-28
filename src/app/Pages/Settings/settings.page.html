@@ -1,0 +1,88 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Settings</ion-title>
+
+    <!-- ion-button slouží jako prvek držící všechny tlačítka uvnitř ion-toolbar -->
+    <!-- [slot] je možnost nastavení zobrazení prvku v pozici v rodičovském prvku -->
+    <!-- [slot] = end - nastavení za titulkem. = start - nastavení před titulkem -->
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        Close
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Settings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-list>
+    <ion-item-group>
+      <ion-item-divider>
+        <h2>   Refresh rate: </h2>
+      </ion-item-divider>
+    <ion-radio-group>
+      <ion-item>
+        <ion-radio>30 seconds</ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-radio>1 minute</ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-radio>2 minutes</ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-radio>5 minutes</ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    </ion-item-group>
+
+    <ion-item-group>
+      <ion-item-divider>
+        <h2>   Units: </h2>
+      </ion-item-divider>
+    <ion-radio-group>
+      <ion-item>
+        <ion-radio>Meters</ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-radio>Feet</ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item-divider>
+        <h2>Background </h2>
+      </ion-item-divider>
+    </ion-item-group>
+  </ion-list>
+  <ion-radio-group>
+    <ion-row class="centerClass">
+      <ion-col >
+        <ion-radio></ion-radio>
+      </ion-col>
+      <ion-col >
+        <ion-radio></ion-radio>
+      </ion-col>
+    </ion-row>
+  </ion-radio-group>
+  <ion-row class="centerClass marginLeft">
+    <ion-col >
+      <img alt="Moutain range" src="assets/images/mountain2.jpg" class="Card"/>
+    </ion-col>
+    <ion-col>
+      <img alt="Moutain range" src="assets/images/mountain (2).jpg" class="Card"/>
+    </ion-col>
+  </ion-row>
+  <!-- formGroup (vyžaduje import modulu ReactiveFormsModule) - jedná se o nejúčinější nástroj formulářů v Angularu -->
+  <!-- vytvoření struktury držené pomocí objektu FormGroup v proměnné form (v našem případě) nabízí možnosti validace, -->
+  <!-- observable pattern na libovolný prvkek libovolného zanoření, event handlery, dynamické vytváření dalších částí -->
+  <!-- formulář, dynamické měnění validačních pravidel, masek ... -->
+  <!-- V našem případě je použit formulář pro práci se zatrháváním míst pro zobrazení na hlavní stránce -->
+
+</ion-content>

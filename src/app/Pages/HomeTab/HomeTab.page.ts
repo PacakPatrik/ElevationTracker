@@ -4,6 +4,8 @@ import { ElevationService } from "../../services/elevation-service/elevation.ser
 import {interval, Observable, of, Subject, timer} from "rxjs";
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { Elevation } from "../../model/elevation.model";
+import {SettingsPage} from "../Settings/settings.page";
+import {ModalController} from "@ionic/angular";
 
 
 @Component({
@@ -24,7 +26,8 @@ export class HomeTabPage {
   buttonColor: string = 'success';
     constructor(
         private elevationService: ElevationService,
-        private locationService: LocationService
+        private locationService: LocationService,
+        private modalCtrl: ModalController,
     ) {
 
       this.isTracking=false;
@@ -101,6 +104,18 @@ export class HomeTabPage {
     clearInterval(this.timer);
     this.time = 0;
     this.timerSubject.next(this.time);
+
+  }
+
+
+  async openSettings() {
+
+    const modal = await this.modalCtrl.create({
+      component: SettingsPage,
+    });
+    await modal.present();
+    modal.onWillDismiss().then(_ => {
+    });
 
   }
 
