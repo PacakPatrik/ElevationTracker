@@ -5,6 +5,7 @@ import {interval, Observable, of, Subject, timer} from "rxjs";
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { Elevation } from "../../model/elevation.model";
 
+
 @Component({
     selector: 'app-HomeTab',
     templateUrl: 'HomeTab.page.html',
@@ -38,26 +39,29 @@ export class HomeTabPage {
     }
   }
 
-    startTracking() {
-      this.isTracking =true;
+    async startTracking() {
+      this.isTracking = true;
       this.destroy$.next();
       this.destroy$.complete();
 
-      this.locationService.getLocation().then(coordinates => {
-        this.elevation$ = this.elevationService.getByGeo$(coordinates.coords.latitude, coordinates.coords.longitude)
-          .pipe(
-            takeUntil(this.destroy$)
-          );
 
-        this.elevation$.subscribe(data => {
-          console.log(data);
+
+
+        this.locationService.getLocation().then(coordinates => {
+          this.elevation$ = this.elevationService.getByGeo$(coordinates.coords.latitude, coordinates.coords.longitude)
+            .pipe(
+              takeUntil(this.destroy$)
+            );
+
+          this.elevation$.subscribe(data => {
+            console.log(data);
+          });
         });
-      });
 
 
-      this.startTimer();
-      this.buttonText = 'Stop tracking';
-      this.buttonColor = 'danger';
+        this.startTimer();
+        this.buttonText = 'Stop tracking';
+        this.buttonColor = 'danger';
     }
     stopTracking(){
       this.isTracking =false;
@@ -76,6 +80,7 @@ export class HomeTabPage {
     this.timer = setInterval(() => {
       this.time++;
 
+      this.locationService.getCurrentPositionWatch();
 
       this.locationService.getLocation().then(coordinates => {
         this.elevation$ = this.elevationService.getByGeo$(coordinates.coords.latitude, coordinates.coords.longitude)
@@ -98,4 +103,5 @@ export class HomeTabPage {
     this.timerSubject.next(this.time);
 
   }
+
 }
