@@ -14,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" >
+<ion-content [fullscreen]="true" class="{{settingService.settingsArray[2]}}">
   <ion-header collapse="condense" >
     <ion-toolbar >
       <ion-title size="large">Home</ion-title>
@@ -37,7 +37,7 @@
           <ng-container *ngIf="elevation$ | async as elevation; else loadingOrPlaceholder">
             <div class="elevation-text-container">
               <p class="elevation-text">{{ elevation?.results?.[0]?.elevation}} </p>
-              <p class="sea-level">above seal level</p>
+              <p class="sea-level">{{settingService.settingsArray[1]}} above sea level</p>
             </div>
           </ng-container>
 
