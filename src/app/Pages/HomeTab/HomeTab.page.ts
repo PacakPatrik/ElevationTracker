@@ -7,6 +7,7 @@ import { Elevation } from "../../model/elevation.model";
 import {SettingsPage} from "../Settings/settings.page";
 import {ModalController} from "@ionic/angular";
 import {SettingsDataService} from "../../services/settings-data-service/settings-data.service"
+import {StorageService} from "../../services/storage-service/storage.service";
 
 
 @Component({
@@ -32,7 +33,7 @@ export class HomeTabPage {
         private locationService: LocationService,
         private modalCtrl: ModalController,
         public settingService : SettingsDataService,
-        private emelentRef:ElementRef
+        private storageService : StorageService
     ) {
     this.delay = 30000;
       this.isTracking=false;
@@ -51,8 +52,7 @@ export class HomeTabPage {
       this.isTracking = true;
       this.destroy$.next();
       this.destroy$.complete();
-
-
+      await this.storageService.resetSessionArray();
 
 
         this.locationService.getLocation().then(coordinates => {
@@ -64,6 +64,8 @@ export class HomeTabPage {
 
           this.elevation$.subscribe(data => {
             console.log(data);
+            this.storageService.setSessionArray(String(data.results?.[0].elevation));
+            console.log(this.storageService.getObject("sessionArray"));
           });
         });
 
@@ -99,7 +101,10 @@ export class HomeTabPage {
           );
 
         this.elevation$.subscribe(data => {
+
           console.log(data);
+          this.storageService.setSessionArray(String(data.results?.[0].elevation));
+          console.log(this.storageService.getObject("sessionArray"));
         });
       });
 
@@ -131,6 +136,7 @@ export class HomeTabPage {
   }
   ngOnInit(){
   }
+
 
   private performCalculation(data: any) {
     if (this.settingService.settingsArray[1] === 'meters') {

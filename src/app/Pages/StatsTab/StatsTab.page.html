@@ -3,6 +3,12 @@
     <ion-title>
       Statistics
     </ion-title>
+    <ion-buttons slot="end">
+      <!-- Tlačítkem otevřu stránku nastavení -->
+      <ion-button (click)="openSettings()">
+        <ion-icon name="cog" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,6 +18,44 @@
       <ion-title size="large">Statistics</ion-title>
     </ion-toolbar>
   </ion-header>
+    <ion-list>
+      <ion-item-group>
+        <ion-item-divider>
+          <h1>Last Session:</h1>
+        </ion-item-divider>
+        <ion-item>
+          <div id="divChart">
+            <canvas id="myChart"></canvas>
+          </div>
+        </ion-item>
+        <ion-radio-group >
+          <ion-item>
+            <ion-radio >30 seconds</ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-radio >1 minute</ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-radio >2 minutes</ion-radio>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-radio>5 minutes</ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-item-group>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+      <ion-item-group>
+        <ion-item-divider>
+          <h1>Overall Statistics:</h1>
+        </ion-item-divider>
+        <ion-radio-group >
+          <ion-item>
+            <ion-radio >Meters</ion-radio>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-radio  >Feet</ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-item-group>
+    </ion-list>
 </ion-content>
