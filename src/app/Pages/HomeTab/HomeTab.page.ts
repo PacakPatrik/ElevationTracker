@@ -8,6 +8,7 @@ import {SettingsPage} from "../Settings/settings.page";
 import {ModalController} from "@ionic/angular";
 import {SettingsDataService} from "../../services/settings-data-service/settings-data.service"
 import {StorageService} from "../../services/storage-service/storage.service";
+import {StatsService} from "../../services/stats-service/stats.service";
 
 
 @Component({
@@ -33,7 +34,8 @@ export class HomeTabPage {
         private locationService: LocationService,
         private modalCtrl: ModalController,
         public settingService : SettingsDataService,
-        private storageService : StorageService
+        private storageService : StorageService,
+        private statsService : StatsService
     ) {
     this.delay = 30000;
       this.isTracking=false;
@@ -52,7 +54,8 @@ export class HomeTabPage {
       this.isTracking = true;
       this.destroy$.next();
       this.destroy$.complete();
-      await this.storageService.resetSessionArray();
+      await this.storageService.resetSession();
+
 
 
         this.locationService.getLocation().then(coordinates => {
@@ -64,7 +67,11 @@ export class HomeTabPage {
 
           this.elevation$.subscribe(data => {
             console.log(data);
+
             this.storageService.setSessionArray(String(data.results?.[0].elevation));
+            this.storageService.setSessionTimeStamps(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).replace(/\s*(AM|PM)\s*/, ''));
+
+            console.log(this.storageService.getObject("sessionTimeStamps"));
             console.log(this.storageService.getObject("sessionArray"));
           });
         });
@@ -104,7 +111,9 @@ export class HomeTabPage {
 
           console.log(data);
           this.storageService.setSessionArray(String(data.results?.[0].elevation));
+          this.storageService.setSessionTimeStamps(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).replace(/\s*(AM|PM)\s*/, ''));
           console.log(this.storageService.getObject("sessionArray"));
+          console.log(this.storageService.getObject("sessionTimeStamps"));
         });
       });
 

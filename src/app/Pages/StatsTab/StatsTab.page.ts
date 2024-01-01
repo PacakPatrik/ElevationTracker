@@ -3,6 +3,8 @@ import {SettingsPage} from "../Settings/settings.page";
 import {ModalController} from "@ionic/angular";
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
+import {StorageService} from "../../services/storage-service/storage.service";
+import {StatsService} from "../../services/stats-service/stats.service";
 
 @Component({
   selector: 'app-StatsTab',
@@ -10,9 +12,12 @@ Chart.register(...registerables);
   styleUrls: ['StatsTab.page.scss']
 })
 export class StatsTabPage {
+  private lastData: { sessionTimeStamps: string[], sessionArray: string[] } = { sessionTimeStamps: [], sessionArray: [] };
 
-  constructor(private modalCtrl: ModalController) {}
-
+  constructor(private modalCtrl: ModalController,
+              private storageService:StorageService,
+              private statsService : StatsService
+  ) {}
 
   async openSettings() {
 
@@ -24,40 +29,64 @@ export class StatsTabPage {
     });
 
   }
-  ngOnInit(){
-    var myChart = new Chart("myChart", {
+  ionViewDidEnter() {
+    this.loadData();
+    this.updateStats();
+  }
+
+  private loadData(): void {
+    this.updateChart();
+  }
+  private updateStats(){
+    //TO DO: kontrolovat a nastavit highest overall, ve view nastavit last session staty
+  }
+
+  private updateChart(): void {
+    this.statsService
+      .getDataForChart()
+      .then((data) => {
+        if (
+          !this.areArraysEqual(data.sessionTimeStamps, this.lastData.sessionTimeStamps) ||
+          !this.areArraysEqual(data.sessionArray, this.lastData.sessionArray)
+        ) {
+          this.createChart(data.sessionTimeStamps, data.sessionArray);
+          this.lastData = { ...data };
+          console.log('Updated chart');
+        }
+      })
+      .catch((error) => {
+        console.error('Error getting data for chart:', error);
+      });
+  }
+
+  private createChart(sessionTimeStamps: string[], sessionArray: string[]): void {
+    // Assuming "myChart" is an element in your template with an ID
+    var existingChart = Chart.getChart("myChart");
+
+    // Destroy the existing chart if it exists
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    // Create the new chart
+    var myChart = new Chart('myChart', {
       type: 'line',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-        }]
+        labels: sessionTimeStamps,
+        datasets: [
+          {
+            label: 'Elevation from latest session',
+            data: sessionArray
+          }
+        ]
       },
       options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
+        // Your chart options here
       }
     });
+  }
+
+  private areArraysEqual(arr1: any[], arr2: any[]): boolean {
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
   }
 }
