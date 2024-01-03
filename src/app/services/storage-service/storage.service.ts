@@ -10,6 +10,11 @@ export class StorageService {
   constructor() {
     this.sessionData = [];
     this.sessionTimeStamps = [];
+    this.getObject("isLowestPointSet").then(data =>{
+      if(!data) {
+        this.setObject("isLowestPointSet", "false");
+      }
+    })
   }
   public async resetSession(){
     await this.removeObject("sessionArray");

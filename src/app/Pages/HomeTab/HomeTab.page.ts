@@ -9,7 +9,7 @@ import {ModalController} from "@ionic/angular";
 import {SettingsDataService} from "../../services/settings-data-service/settings-data.service"
 import {StorageService} from "../../services/storage-service/storage.service";
 import {StatsService} from "../../services/stats-service/stats.service";
-
+import {UnitServiceService} from "../../services/unit-service/unit-service.service";
 
 @Component({
     selector: 'app-HomeTab',
@@ -27,7 +27,6 @@ export class HomeTabPage {
   private isTracking : boolean;
   buttonText: string = 'Start tracking';
   buttonColor: string = 'success';
-  public delay;
   backgroundStyle: string = '';
     constructor(
         private elevationService: ElevationService,
@@ -35,9 +34,8 @@ export class HomeTabPage {
         private modalCtrl: ModalController,
         public settingService : SettingsDataService,
         private storageService : StorageService,
-        private statsService : StatsService
+        private unitService : UnitServiceService
     ) {
-    this.delay = 30000;
       this.isTracking=false;
     }
 
@@ -62,7 +60,7 @@ export class HomeTabPage {
           this.elevation$ = this.elevationService.getByGeo$(coordinates.coords.latitude, coordinates.coords.longitude)
             .pipe(
               takeUntil(this.destroy$),
-                map(data => this.performCalculation(data))
+                map(data => this.unitService.performCalculation(data))
             );
 
           this.elevation$.subscribe(data => {
@@ -104,7 +102,7 @@ export class HomeTabPage {
         this.elevation$ = this.elevationService.getByGeo$(coordinates.coords.latitude, coordinates.coords.longitude)
           .pipe(
             takeUntil(this.destroy$),
-              map(data => this.performCalculation(data))
+              map(data => this.unitService.performCalculation(data))
           );
 
         this.elevation$.subscribe(data => {
@@ -118,7 +116,7 @@ export class HomeTabPage {
       });
 
 
-    }, this.delay);
+    }, Number(this.settingService.settingsArray[0]));
   }
 
   stopTimer() {
@@ -144,24 +142,5 @@ export class HomeTabPage {
     return `url(${this.settingService.settingsArray[2]}) 0 0/100% 100% no-repeat`
   }
   ngOnInit(){
-  }
-
-
-  private performCalculation(data: any) {
-    if (this.settingService.settingsArray[1] === 'meters') {
-      return data;
-    } else {
-      const metersToFeetConversionFactor = 3.2808399;
-
-      // Check if elevation data is available and has a valid value
-      if (data?.results?.[0]?.elevation !== undefined) {
-        const elevationInMeters = data.results[0].elevation;
-        const elevationInFeet = elevationInMeters * metersToFeetConversionFactor;
-        data.results[0].elevation = Math.trunc(elevationInFeet);
-        return data;
-      } else {
-        return data; // Return unchanged data if elevation is not available or not valid
-      }
-    }
   }
 }

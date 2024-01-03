@@ -20,9 +20,7 @@
   </ion-header>
     <ion-list>
       <ion-item-group>
-        <ion-item-divider>
           <h1>Last Session:</h1>
-        </ion-item-divider>
         <ion-item>
           <div id="divChart">
             <canvas id="myChart"></canvas>
@@ -30,30 +28,71 @@
         </ion-item>
         <ion-radio-group >
           <ion-item>
-            <ion-radio >30 seconds</ion-radio>
+            <ion-item-divider>
+              <h3>Highest Point:</h3>
+            </ion-item-divider>
           </ion-item>
           <ion-item>
-            <ion-radio >1 minute</ion-radio>
+            <ion-label>
+              {{ highestPointLastSession }}
+              {{ unitService.IsMeters ? ' meters' : ' feet' }}
+            </ion-label>
           </ion-item>
           <ion-item>
-            <ion-radio >2 minutes</ion-radio>
+            <ion-item-divider>
+              <h3>Elevation change:</h3>
+            </ion-item-divider>
           </ion-item>
-          <ion-item lines="none">
-            <ion-radio>5 minutes</ion-radio>
+          <ion-item>
+            <ion-label>{{elevationChangeLastSession}}
+              {{ unitService.IsMeters ? ' meters' : ' feet' }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-item-divider>
+              <h3>Lowest Point:</h3>
+            </ion-item-divider>
+          </ion-item>
+          <ion-item>
+            <ion-label>{{lowestPointLastSession}}
+              {{ unitService.IsMeters ? ' meters' : ' feet' }}
+            </ion-label>
           </ion-item>
         </ion-radio-group>
       </ion-item-group>
 
       <ion-item-group>
-        <ion-item-divider>
-          <h1>Overall Statistics:</h1>
-        </ion-item-divider>
+          <h1>Overall:</h1>
         <ion-radio-group >
           <ion-item>
-            <ion-radio >Meters</ion-radio>
+            <ion-item-divider>
+              <h3>Highest Point:</h3>
+            </ion-item-divider>
           </ion-item>
-          <ion-item lines="none">
-            <ion-radio  >Feet</ion-radio>
+          <ion-item>
+            <ion-label>{{highestPointOverall}}
+              {{ unitService.IsMeters ? ' meters' : ' feet' }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-item-divider>
+              <h3>Highest Elevation change:</h3>
+            </ion-item-divider>
+          </ion-item>
+          <ion-item>
+            <ion-label>{{overallElevationChange}}
+              {{ unitService.IsMeters ? ' meters' : ' feet' }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-item-divider>
+              <h3>Lowest Point:</h3>
+            </ion-item-divider>
+          </ion-item>
+          <ion-item>
+            <ion-label>{{lowestPointOverall}}
+              {{ unitService.IsMeters ? ' meters' : ' feet' }}
+            </ion-label>
           </ion-item>
         </ion-radio-group>
       </ion-item-group>

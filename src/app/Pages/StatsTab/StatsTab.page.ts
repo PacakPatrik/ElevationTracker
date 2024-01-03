@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import {SettingsPage} from "../Settings/settings.page";
 import {ModalController} from "@ionic/angular";
 import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+import { ChangeDetectorRef } from '@angular/core';
 import {StorageService} from "../../services/storage-service/storage.service";
 import {StatsService} from "../../services/stats-service/stats.service";
-
+Chart.register(...registerables);
+import {UnitServiceService} from "../../services/unit-service/unit-service.service";
 @Component({
   selector: 'app-StatsTab',
   templateUrl: 'StatsTab.page.html',
@@ -13,11 +14,29 @@ import {StatsService} from "../../services/stats-service/stats.service";
 })
 export class StatsTabPage {
   private lastData: { sessionTimeStamps: string[], sessionArray: string[] } = { sessionTimeStamps: [], sessionArray: [] };
+  public highestPointOverall:number;
+  public overallElevationChange:number;
+  public lowestPointOverall:number;
+
+  public highestPointLastSession:number;
+  public elevationChangeLastSession:number;
+  public lowestPointLastSession:number;
 
   constructor(private modalCtrl: ModalController,
               private storageService:StorageService,
-              private statsService : StatsService
-  ) {}
+              public statsService : StatsService,
+              private cdr: ChangeDetectorRef,
+              public unitService:UnitServiceService
+  ) {
+   this.highestPointOverall = 0;
+   this.overallElevationChange = 0;
+   this.lowestPointOverall = 0;
+
+   this.highestPointLastSession = 0;
+   this.elevationChangeLastSession = 0;
+   this.lowestPointLastSession=0;
+
+  }
 
   async openSettings() {
 
@@ -30,15 +49,38 @@ export class StatsTabPage {
 
   }
   ionViewDidEnter() {
-    this.loadData();
+    this.updateChart();
     this.updateStats();
   }
+  private async updateStats(){
 
-  private loadData(): void {
-    this.updateChart();
-  }
-  private updateStats(){
-    //TO DO: kontrolovat a nastavit highest overall, ve view nastavit last session staty
+    this.highestPointLastSession = await this.statsService.getHighestPointInLastSession();
+    this.lowestPointLastSession = await this.statsService.getlowestPointLastSession();
+    this.elevationChangeLastSession = await this.statsService.getElevationChangeInLatestSession();
+
+    if(this.highestPointLastSession > await this.statsService.gethighestPointOverall()){
+      await this.statsService.sethighestPointOverall(this.highestPointLastSession);
+
+    }
+    this.highestPointOverall = await this.statsService.gethighestPointOverall();
+
+      if(await this.statsService.getIsLowestPointSet()==="true") {
+          if (this.lowestPointLastSession < await this.statsService.getlowestPointOverall()) {
+              await this.statsService.setlowestPointOverall(this.lowestPointLastSession);
+          }
+          console.log("set")
+          this.lowestPointOverall = await this.statsService.getlowestPointOverall();
+      } else {
+          console.log("not set");
+          await this.statsService.setlowestPointOverall(this.highestPointLastSession);
+          await this.statsService.setIsLowestPointSet("true");
+      }
+      if(this.elevationChangeLastSession > await this.statsService.gethighestOverallElevationChange()){
+      await this.statsService.sethighestOverallElevationChange(this.elevationChangeLastSession);
+    }
+    this.overallElevationChange = await this.statsService.gethighestOverallElevationChange();
+
+    this.cdr.detectChanges();
   }
 
   private updateChart(): void {
@@ -60,10 +102,8 @@ export class StatsTabPage {
   }
 
   private createChart(sessionTimeStamps: string[], sessionArray: string[]): void {
-    // Assuming "myChart" is an element in your template with an ID
     var existingChart = Chart.getChart("myChart");
 
-    // Destroy the existing chart if it exists
     if (existingChart) {
       existingChart.destroy();
     }
@@ -81,7 +121,11 @@ export class StatsTabPage {
         ]
       },
       options: {
-        // Your chart options here
+        plugins: {
+          legend: {
+            display: false
+          },
+        }
       }
     });
   }
