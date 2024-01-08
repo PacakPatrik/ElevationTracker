@@ -4,7 +4,6 @@
       Statistics
     </ion-title>
     <ion-buttons slot="end">
-      <!-- Tlačítkem otevřu stránku nastavení -->
       <ion-button (click)="openSettings()">
         <ion-icon name="cog" slot="icon-only"></ion-icon>
       </ion-button>
@@ -21,11 +20,20 @@
     <ion-list>
       <ion-item-group>
           <h1>Last Session:</h1>
-        <ion-item>
+        <ion-item *ngIf="this.storageService.sessionData.length !== 0; else noSession">
           <div id="divChart">
             <canvas id="myChart"></canvas>
           </div>
         </ion-item>
+        <ng-template #noSession>
+          <!-- HTML to be generated when sessionArray[0] is null -->
+          <ion-item>
+           <p class="noData">
+             No session data available. Start tracking to see graph of your latest activity
+           </p>
+            <!-- Add other HTML elements specific to the null scenario -->
+          </ion-item>
+        </ng-template>
         <ion-radio-group >
           <ion-item>
             <ion-item-divider>

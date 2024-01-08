@@ -14,30 +14,31 @@ import {UnitServiceService} from "../../services/unit-service/unit-service.servi
 })
 export class StatsTabPage {
   private lastData: { sessionTimeStamps: string[], sessionArray: string[] } = { sessionTimeStamps: [], sessionArray: [] };
-  public highestPointOverall:number;
-  public overallElevationChange:number;
-  public lowestPointOverall:number;
+  public highestPointOverall:number = 0;
+  public overallElevationChange:number = 0;
+  public lowestPointOverall:number = 0;
 
-  public highestPointLastSession:number;
-  public elevationChangeLastSession:number;
-  public lowestPointLastSession:number;
+  public highestPointLastSession:number=0;
+  public elevationChangeLastSession:number=0;
+  public lowestPointLastSession:number=0;
 
   constructor(private modalCtrl: ModalController,
-              private storageService:StorageService,
-              public statsService : StatsService,
-              private cdr: ChangeDetectorRef,
-              public unitService:UnitServiceService
+                    public storageService: StorageService,
+                    public statsService: StatsService,
+                    private cdr: ChangeDetectorRef,
+                    public unitService: UnitServiceService
   ) {
-   this.highestPointOverall = 0;
-   this.overallElevationChange = 0;
-   this.lowestPointOverall = 0;
-
-   this.highestPointLastSession = 0;
-   this.elevationChangeLastSession = 0;
-   this.lowestPointLastSession=0;
-
+    this.setDefaults();
   }
+  async setDefaults() : Promise<void> {
+    this.highestPointOverall = await this.statsService.gethighestPointOverall();
+    this.overallElevationChange = await this.statsService.gethighestOverallElevationChange();
+    this.lowestPointOverall = await this.statsService.getlowestPointOverall();
 
+    this.highestPointLastSession = await this.statsService.getHighestPointInLastSession();
+    this.elevationChangeLastSession = await this.statsService.getElevationChangeInLatestSession();
+    this.lowestPointLastSession = await this.statsService.getlowestPointLastSession();
+  }
   async openSettings() {
 
     const modal = await this.modalCtrl.create({
@@ -58,24 +59,30 @@ export class StatsTabPage {
     this.lowestPointLastSession = await this.statsService.getlowestPointLastSession();
     this.elevationChangeLastSession = await this.statsService.getElevationChangeInLatestSession();
 
+    this.lowestPointOverall = await this.statsService.getlowestPointOverall();
     if(this.highestPointLastSession > await this.statsService.gethighestPointOverall()){
       await this.statsService.sethighestPointOverall(this.highestPointLastSession);
-
     }
     this.highestPointOverall = await this.statsService.gethighestPointOverall();
 
-      if(await this.statsService.getIsLowestPointSet()==="true") {
+    if(await this.statsService.getIsLowestPointSet()==="true")
+    {
           if (this.lowestPointLastSession < await this.statsService.getlowestPointOverall()) {
               await this.statsService.setlowestPointOverall(this.lowestPointLastSession);
           }
-          console.log("set")
           this.lowestPointOverall = await this.statsService.getlowestPointOverall();
-      } else {
-          console.log("not set");
-          await this.statsService.setlowestPointOverall(this.highestPointLastSession);
-          await this.statsService.setIsLowestPointSet("true");
+    }
+    else
+    {
+      if(await this.storageService.getTrackingStatus() ==="true")
+      {
+        await this.statsService.setlowestPointOverall(this.highestPointLastSession);
+        await this.statsService.setIsLowestPointSet("true");
+        this.lowestPointOverall = await this.statsService.getlowestPointOverall();
       }
-      if(this.elevationChangeLastSession > await this.statsService.gethighestOverallElevationChange()){
+    }
+    if(this.elevationChangeLastSession > await this.statsService.gethighestOverallElevationChange())
+    {
       await this.statsService.sethighestOverallElevationChange(this.elevationChangeLastSession);
     }
     this.overallElevationChange = await this.statsService.gethighestOverallElevationChange();
@@ -95,6 +102,7 @@ export class StatsTabPage {
           this.lastData = { ...data };
           console.log('Updated chart');
         }
+
       })
       .catch((error) => {
         console.error('Error getting data for chart:', error);

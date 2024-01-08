@@ -1,4 +1,4 @@
-import {Component, ElementRef} from '@angular/core';
+import {Component, ElementRef, HostListener} from '@angular/core';
 import { LocationService } from "../../services/location-service/location.service";
 import { ElevationService } from "../../services/elevation-service/elevation.service";
 import {interval, map, Observable, of, Subject, timer} from "rxjs";
@@ -49,6 +49,7 @@ export class HomeTabPage {
   }
 
     async startTracking() {
+      await this.storageService.setTrackingStatus(true);
       this.isTracking = true;
       this.destroy$.next();
       this.destroy$.complete();
@@ -79,19 +80,25 @@ export class HomeTabPage {
         this.buttonText = 'Stop tracking';
         this.buttonColor = 'danger';
     }
-    stopTracking(){
+    async stopTracking(){
+      await this.storageService.setTrackingStatus(false);
       this.isTracking =false;
       this.stopTimer();
       this.buttonText = 'Start tracking';
       this.buttonColor = 'success';
     }
 
-    ngOnDestroy() {
-        // Ensure that the observable is unsubscribed when the component is destroyed
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+    async ngOnDestroy() {
+      await this.storageService.setTrackingStatus(false);
+      // Ensure that the observable is unsubscribed when the component is destroyed
+      this.destroy$.next();
+      this.destroy$.complete();
 
+    }
+  @HostListener('window:beforeunload', ['$event'])
+  async beforeUnloadHandler(event: Event) {
+    await this.storageService.setTrackingStatus(false);
+  }
   startTimer() {
     this.timer = setInterval(() => {
       this.time++;

@@ -9,9 +9,6 @@ export class StatsService {
 
 
   constructor(private storageService:StorageService) {
-    this.sethighestOverallElevationChange(0);
-    this.sethighestPointOverall(0);
-    this.setlowestPointOverall(0);
   }
   getDataForChart(): Promise<{ sessionTimeStamps: string[], sessionArray: string[] }> {
     return Promise.all([
@@ -86,15 +83,12 @@ export class StatsService {
         if (sessionArray.length > 0) {
           return Math.min(...sessionArray);
         } else {
-          console.warn("Session array is empty.");
           return 0; // or handle the case where the array is empty
         }
       } else {
-        console.warn("Session array string is null or undefined.");
         return 0; // or handle the case where the array string is null or undefined
       }
     } catch (error) {
-      console.error("Error getting highest point:", error);
       return 0; // or handle the error as needed
     }
   }

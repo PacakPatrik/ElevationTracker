@@ -15,6 +15,11 @@ export class StorageService {
         this.setObject("isLowestPointSet", "false");
       }
     })
+  this.setDefaults();
+  }
+  async setDefaults(){
+    this.sessionData =JSON.parse(await this.getObject("sessionArray") || '[]');
+    this.sessionTimeStamps =JSON.parse(await this.getObject("sessionTimeStamps") || '[]');
   }
   public async resetSession(){
     await this.removeObject("sessionArray");
@@ -53,5 +58,10 @@ export class StorageService {
     return ret.value;
   }
 
-
+  public async setTrackingStatus(value:any) {
+    await this.setObject("isTracking", value);
+  }
+  public async getTrackingStatus() {
+    return await this.getObject("isTracking");
+  }
 }
