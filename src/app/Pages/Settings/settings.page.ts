@@ -2,7 +2,7 @@
   import {ModalController} from "@ionic/angular";
   import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
   import {SettingsDataService} from "../../services/settings-data-service/settings-data.service";
-  import {firstValueFrom} from "rxjs";
+  import {StorageService} from "../../services/storage-service/storage.service";
 
   @Component({
     selector: 'app-Settings',
@@ -15,9 +15,11 @@
     constructor(
         private modalCtrl: ModalController,
         private fb: FormBuilder,
-        private settingsData : SettingsDataService
+        private settingsData : SettingsDataService,
+        public storageService : StorageService
     ) {
       this.form = this.fb.group({
+
         "refreshRate": [settingsData.settingsArray[0]],
         "units": [settingsData.settingsArray[1]],
         "pictureOption": [settingsData.settingsArray[2]]

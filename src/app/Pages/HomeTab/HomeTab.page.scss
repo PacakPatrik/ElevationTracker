@@ -7,7 +7,6 @@
 .custom-content {
   height: 100%;
 }
-
 .row-container {
   height: 100%;
   display: flex;
@@ -42,12 +41,16 @@
 .sea-level{
   font-size: x-large;
   font-weight: bold;
-
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.last{
+  font-size: 14px;
 }
 .mountain-icon
 {
-  width: 20%;
-  height: 20%;
+  width: 25%;
+  height: 25%;
 }
 .center{
   display: flex;

@@ -4,18 +4,13 @@ import {SettingsDataService} from "../settings-data-service/settings-data.servic
   providedIn: 'root'
 })
 export class UnitServiceService {
-
-  public IsMeters:boolean;
   constructor(private settingService: SettingsDataService) {
-    this.IsMeters = true;
   }
   public performCalculation(data: any) {
     if (this.settingService.settingsArray[1] === 'meters') {
-      this.IsMeters= true;
       return data;
     } else {
       const metersToFeetConversionFactor = 3.2808399;
-      this.IsMeters=false;
       // Check if elevation data is available and has a valid value
       if (data?.results?.[0]?.elevation !== undefined) {
         const elevationInMeters = data.results[0].elevation;

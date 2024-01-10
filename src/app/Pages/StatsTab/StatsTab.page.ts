@@ -7,6 +7,7 @@ import {StorageService} from "../../services/storage-service/storage.service";
 import {StatsService} from "../../services/stats-service/stats.service";
 Chart.register(...registerables);
 import {UnitServiceService} from "../../services/unit-service/unit-service.service";
+import {SettingsDataService} from "../../services/settings-data-service/settings-data.service";
 @Component({
   selector: 'app-StatsTab',
   templateUrl: 'StatsTab.page.html',
@@ -26,7 +27,8 @@ export class StatsTabPage {
                     public storageService: StorageService,
                     public statsService: StatsService,
                     private cdr: ChangeDetectorRef,
-                    public unitService: UnitServiceService
+                    public unitService: UnitServiceService,
+                    public settingService :SettingsDataService
   ) {
     this.setDefaults();
   }

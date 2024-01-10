@@ -8,7 +8,6 @@ import {SettingsPage} from "../Settings/settings.page";
 import {ModalController} from "@ionic/angular";
 import {SettingsDataService} from "../../services/settings-data-service/settings-data.service"
 import {StorageService} from "../../services/storage-service/storage.service";
-import {StatsService} from "../../services/stats-service/stats.service";
 import {UnitServiceService} from "../../services/unit-service/unit-service.service";
 
 @Component({
@@ -33,7 +32,7 @@ export class HomeTabPage {
         private locationService: LocationService,
         private modalCtrl: ModalController,
         public settingService : SettingsDataService,
-        private storageService : StorageService,
+        public storageService : StorageService,
         private unitService : UnitServiceService
     ) {
       this.isTracking=false;
@@ -57,6 +56,8 @@ export class HomeTabPage {
 
 
 
+
+
         this.locationService.getLocation().then(coordinates => {
           this.elevation$ = this.elevationService.getByGeo$(coordinates.coords.latitude, coordinates.coords.longitude)
             .pipe(
@@ -65,8 +66,9 @@ export class HomeTabPage {
             );
 
           this.elevation$.subscribe(data => {
-            console.log(data);
 
+
+            //store data
             this.storageService.setSessionArray(String(data.results?.[0].elevation));
             this.storageService.setSessionTimeStamps(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).replace(/\s*(AM|PM)\s*/, ''));
 
@@ -74,6 +76,7 @@ export class HomeTabPage {
             console.log(this.storageService.getObject("sessionArray"));
           });
         });
+
 
 
         this.startTimer();
@@ -115,6 +118,7 @@ export class HomeTabPage {
         this.elevation$.subscribe(data => {
 
           console.log(data);
+
           this.storageService.setSessionArray(String(data.results?.[0].elevation));
           this.storageService.setSessionTimeStamps(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).replace(/\s*(AM|PM)\s*/, ''));
           console.log(this.storageService.getObject("sessionArray"));
