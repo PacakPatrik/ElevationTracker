@@ -153,5 +153,6 @@ export class HomeTabPage {
     return `url(${this.settingService.settingsArray[2]}) 0 0/100% 100% no-repeat`
   }
   ngOnInit(){
+    this.storageService.getData();
   }
 }

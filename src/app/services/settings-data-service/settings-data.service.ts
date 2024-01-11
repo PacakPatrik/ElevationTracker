@@ -9,6 +9,6 @@ export class SettingsDataService {
   //public settingsArray$: Observable<string[]> = this._settingsArray.asObservable();
   public settingsArray: string[];
   constructor() {
-  this.settingsArray =['auto','meters','ion-content-first']
+  this.settingsArray =['30000','meters','ion-content-first']
   }
 }

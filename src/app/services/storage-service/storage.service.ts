@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Preferences} from "@capacitor/preferences";
+import {SettingsDataService} from "../settings-data-service/settings-data.service";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import {Preferences} from "@capacitor/preferences";
 export class StorageService {
   public sessionData: string[];
   public sessionTimeStamps:string[];
-  constructor() {
+  constructor(private settingData : SettingsDataService) {
     this.sessionData = [];
     this.sessionTimeStamps = [];
     this.getObject("isLowestPointSet").then(data =>{
@@ -17,6 +18,30 @@ export class StorageService {
     })
   this.setDefaults();
   }
+
+
+  public async getData() {
+    await this.getObject("refreshRate").then((data) => {
+      if (data) {
+
+        this.settingData.settingsArray[0] = String(data).replace(/"/g, '');
+      }
+    });
+
+    await this.getObject("units").then((data) => {
+      if (data) {
+        this.settingData.settingsArray[1] = String(data).replace(/"/g, '');
+      }
+    });
+
+    await this.getObject("pictureOption").then((data) => {
+      if (data) {
+        this.settingData.settingsArray[2] = String(data).replace(/"/g, '');
+      }
+    });
+  }
+
+
   async setDefaults(){
     this.sessionData =JSON.parse(await this.getObject("sessionArray") || '[]');
     this.sessionTimeStamps =JSON.parse(await this.getObject("sessionTimeStamps") || '[]');

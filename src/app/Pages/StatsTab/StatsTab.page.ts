@@ -52,6 +52,7 @@ export class StatsTabPage {
 
   }
   ionViewDidEnter() {
+    this.storageService.getData();
     this.updateChart();
     this.updateStats();
   }
