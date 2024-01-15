@@ -37,59 +37,10 @@ export class StatsTabPage {
   }
   ionViewDidEnter() {
     this.storageService.getData();
-    this.updateChart();
-    this.statsService.updateStats(this.cdr);
+
   }
 
-  private updateChart(): void {
-    this.statsService
-      .getDataForChart()
-      .then((data) => {
-        if (
-          !this.areArraysEqual(data.sessionTimeStamps, this.lastData.sessionTimeStamps) ||
-          !this.areArraysEqual(data.sessionArray, this.lastData.sessionArray)
-        ) {
-          this.createChart(data.sessionTimeStamps, data.sessionArray);
-          this.lastData = { ...data };
-          console.log('Updated chart');
-        }
 
-      })
-      .catch((error) => {
-        console.error('Error getting data for chart:', error);
-      });
-  }
 
-  private createChart(sessionTimeStamps: string[], sessionArray: string[]): void {
-    var existingChart = Chart.getChart("myChart");
 
-    if (existingChart) {
-      existingChart.destroy();
-    }
-
-    // Create the new chart
-    var myChart = new Chart('myChart', {
-      type: 'line',
-      data: {
-        labels: sessionTimeStamps,
-        datasets: [
-          {
-            label: 'Elevation from latest session',
-            data: sessionArray
-          }
-        ]
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: false
-          },
-        }
-      }
-    });
-  }
-
-  private areArraysEqual(arr1: any[], arr2: any[]): boolean {
-    return JSON.stringify(arr1) === JSON.stringify(arr2);
-  }
 }
