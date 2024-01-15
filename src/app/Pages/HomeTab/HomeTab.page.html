@@ -1,7 +1,8 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Home
+  <ion-toolbar >
+    <ion-title >
+      <img class="titleImage" src="assets/images/mountain-icon.png">
+      Highker
     </ion-title>
 
 
@@ -57,7 +58,20 @@
               </ion-row>
             </div>
           </ng-container>
-
+          <ion-item class="chart" *ngIf="this.storageService.sessionData.length !== 0; else noSession">
+            <div>
+              <canvas id="myChart" ></canvas>
+            </div>
+          </ion-item>
+          <ng-template #noSession>
+            <!-- HTML to be generated when sessionArray[0] is null -->
+            <ion-item>
+              <p class="noData">
+                No session data available. Start tracking to see graph of your latest activity
+              </p>
+              <!-- Add other HTML elements specific to the null scenario -->
+            </ion-item>
+          </ng-template>
           <ng-template #loadingOrPlaceholder>
             <p class="elevation-text">_ _ _</p>
             <p class="loading-text">To get elevation data, push "Start Tracking"</p>
@@ -82,30 +96,19 @@
        </ion-col>
      </ion-row>
 
-     <!-- Third Row -->
 
   </ion-grid>
+  <ion-segment color="dark" class="separator">
+    <ion-icon name="chevron-up-outline" class="separator-icon" color="primary"></ion-icon>
+  </ion-segment>
   <ion-list>
-    <ion-item-group>
-      <h1>Last Session:</h1>
-      <ion-item *ngIf="this.storageService.sessionData.length !== 0; else noSession">
-        <div id="divChart">
-          <canvas id="myChart"></canvas>
-        </div>
-      </ion-item>
-      <ng-template #noSession>
-        <!-- HTML to be generated when sessionArray[0] is null -->
-        <ion-item>
-          <p class="noData">
-            No session data available. Start tracking to see graph of your latest activity
-          </p>
-          <!-- Add other HTML elements specific to the null scenario -->
-        </ion-item>
-      </ng-template>
-      <ion-radio-group >
+    <div class="background">
+    <ion-item-group class="statsHeader2">
+      <h2>Last Session:</h2>
         <ion-item>
           <ion-item-divider>
-            <h3>Highest Point:</h3>
+            <ion-icon name="trending-up-outline" class="statsIconsLast"></ion-icon>
+            <h4>Highest Point:</h4>
           </ion-item-divider>
         </ion-item>
         <ion-item>
@@ -116,7 +119,8 @@
         </ion-item>
         <ion-item>
           <ion-item-divider>
-            <h3>Elevation change:</h3>
+            <ion-icon name="resize-outline" class="statsIconsLast"></ion-icon>
+            <h4>Elevation change:</h4>
           </ion-item-divider>
         </ion-item>
         <ion-item>
@@ -126,7 +130,8 @@
         </ion-item>
         <ion-item>
           <ion-item-divider>
-            <h3>Lowest Point:</h3>
+            <ion-icon name="trending-down-outline" class="statsIconsLast"></ion-icon>
+            <h4>Lowest Point:</h4>
           </ion-item-divider>
         </ion-item>
         <ion-item>
@@ -134,25 +139,27 @@
             {{  settingService.settingsArray[1] }}
           </ion-label>
         </ion-item>
-      </ion-radio-group>
     </ion-item-group>
-
-    <ion-item-group>
-      <h1>Overall:</h1>
+      </div>
+    <ion-item-group class="statsHeader2">
+      <h2>Overall:</h2>
       <ion-radio-group >
         <ion-item>
           <ion-item-divider>
-            <h3>Highest Point:</h3>
+            <ion-icon name="trending-up-outline" class="statsIconsOverall"></ion-icon>
+            <h4>Highest Point:</h4>
           </ion-item-divider>
         </ion-item>
         <ion-item>
+
           <ion-label>{{this.statsService.highestPointOverall}}
             {{  settingService.settingsArray[1] }}
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-item-divider>
-            <h3>Highest Elevation change in single session:</h3>
+            <ion-icon name="resize-outline" class="statsIconsOverall"></ion-icon>
+            <h4>Highest Elevation Change</h4>
           </ion-item-divider>
         </ion-item>
         <ion-item>
@@ -162,7 +169,8 @@
         </ion-item>
         <ion-item>
           <ion-item-divider>
-            <h3>Lowest Point:</h3>
+            <ion-icon name="trending-down-outline" class="statsIconsOverall"></ion-icon>
+            <h4>Lowest Point:</h4>
           </ion-item-divider>
         </ion-item>
         <ion-item>
@@ -174,16 +182,4 @@
     </ion-item-group>
   </ion-list>
 
-  <!-- Tlačítko pro získání dat ruční cestou -->
-  <!-- funkce fetch vloží získané data (async) do proměnné data vypsané níže -->
-
-  <!-- Vypisuji obsah, co obsahuje proměnná data -->
-  <!-- Před zmářknutím tlačítka obsahuje pouze {} - prízdný objekt, proto se níže nacházejí podmínky -->
-  <!-- Proměnná weather$ obsahuje Observable - což lze získav skrze .subscribe -->
-  <!-- .subscribe (co lze provést na controlleru) je zde nahrazen pomocí pipe async -->
-  <!-- Pipe async lze použít v podmínce (získá asynchroní data), jelikžo provede .subscribe na pozadí -->
-  <!-- Dokud se data z weather$ nevrací, je vraceno false, v momentě kdy se data získají ze serveru, vrátí se data -->
-  <!-- Data jsou vloženy skrze vlastnost *ngIf do proměnné let weather, kteoru mohu použít dále v kódu (pouze uvnitř podmínky) -->
-  <!-- Data vloženy do proměnné let weather, přebírají stejný datový typ. weather$: Observable<any> >>> weather: any -->
-  <!-- Pipe je vnitře podobná jako serviska - jedná se o podobné řešení -->
 </ion-content>

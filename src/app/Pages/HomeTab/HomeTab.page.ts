@@ -186,20 +186,55 @@ export class HomeTabPage {
           datasets: [
             {
               label: 'Elevation from latest session',
-              data: sessionArray
+              data: sessionArray,
+              pointRadius: 0,
+              borderColor: 'rgba(75, 192, 192, 0.5)', // Set the border color
+              borderWidth: 1, // Set the border width
+              pointHoverRadius: 0, // Hide points on hover
+              tension: 0.4
             }
           ]
         },
         options: {
           plugins: {
+
             legend: {
               display: false
             },
-          }
+
+
+          },
+          layout: {
+            padding: {
+              left:10,
+              right: 50,
+              bottom:10,
+              top:10
+            },
+          },
+          scales:{
+            y: {
+
+              display: false, // Hide the y-axis numbers
+              grid: {
+                display: false
+              }
+            },
+            x: {
+              display: true,
+              ticks: {
+                font:{
+                  size:9
+                } // Hide x-axis tick values
+              }
+            },
+          },
+          maintainAspectRatio: false,
         }
       });
     }, 100);
   }
+
 
   private areArraysEqual(arr1: any[], arr2: any[]): boolean {
     return JSON.stringify(arr1) === JSON.stringify(arr2);

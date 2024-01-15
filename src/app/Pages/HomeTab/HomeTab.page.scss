@@ -8,7 +8,7 @@
   height: 100%;
 }
 .row-container {
-  height: 100%;
+  height:100vh;
   display: flex;
   flex-direction: column;
 }
@@ -61,3 +61,75 @@
   font-size: x-large;
   font-weight: bold;
 }
+.chart{
+  width: 70vw;
+  height: 150px;
+  border: 2px solid black;
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px 2px;
+
+}
+#myChart {
+  width: 70vw;
+  height: 150px;
+  --background: #181a1f;
+}
+.separator
+ {
+  padding: 0;
+  margin: 0;
+  height: 20px;
+  background-color: black;
+  display: flex;
+  justify-content: center; /* Add this line */
+   position: sticky;
+   z-index: 1;
+   bottom: 0;
+ }
+.statsHeader{
+  text-align: center;
+}
+ion-toolbar{
+  height: 7vh;
+  background-color: black;
+}
+ion-title{
+  margin: 0;
+  padding-left: 10px;
+}
+.titleImage{
+  width: 15px;
+  height: 15px;
+}
+.statsHeader h1, ion-item-divider {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+ion-label {
+  font-size: 1rem;
+  color: #555;
+}
+.statsIconsLast{
+  padding:3px;
+  border: 2px white;
+  border-radius: 20px;
+  box-shadow: 2px 2px 5px 1px;
+  margin-right: 10px;
+  margin-left: 3px;
+  background-color: #cffcf0;
+}
+.statsIconsOverall{
+  padding:3px;
+  border: 2px white;
+  border-radius: 20px;
+  box-shadow: 2px 2px 5px 1px;
+  margin-right: 10px;
+  margin-left: 3px;
+  background-color: #c8defa;
+}
+.statsHeader2{
+  margin-left: 5px;
+}
+
+

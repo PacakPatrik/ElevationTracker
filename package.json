@@ -32,6 +32,7 @@
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "^7.0.0",
     "chart.js": "^4.4.1",
+    "chartjs-plugin-zoom": "^2.0.1",
     "cordova-plugin-badge": "^0.8.9",
     "cordova-plugin-badge-fix": "^0.8.10",
     "cordova-plugin-device": "^2.1.0",
