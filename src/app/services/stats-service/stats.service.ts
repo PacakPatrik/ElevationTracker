@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {ChangeDetectorRef, Injectable} from '@angular/core';
 import {Chart} from "chart.js";
 import {StorageService} from "../storage-service/storage.service";
 
@@ -7,7 +7,13 @@ import {StorageService} from "../storage-service/storage.service";
 })
 export class StatsService {
 
+  public highestPointOverall:number = 0;
+  public overallElevationChange:number = 0;
+  public lowestPointOverall:number = 0;
 
+  public highestPointLastSession:number=0;
+  public elevationChangeLastSession:number=0;
+  public lowestPointLastSession:number=0;
   constructor(private storageService:StorageService) {
   }
   getDataForChart(): Promise<{ sessionTimeStamps: string[], sessionArray: string[] }> {
@@ -116,9 +122,55 @@ export class StatsService {
     }
   }
 
-    private parseNumber(value: any): number {
+  parseNumber(value: any): number {
         const parsedValue = Number(value);
         return !isNaN(parsedValue) ? parsedValue : 0;
     }
+
+  async setDefaults() : Promise<void> {
+    this.highestPointOverall = await this.gethighestPointOverall();
+    this.overallElevationChange = await this.gethighestOverallElevationChange();
+    this.lowestPointOverall = await this.getlowestPointOverall();
+
+    this.highestPointLastSession = await this.getHighestPointInLastSession();
+    this.elevationChangeLastSession = await this.getElevationChangeInLatestSession();
+    this.lowestPointLastSession = await this.getlowestPointLastSession();
+  }
+   async updateStats(cdr: ChangeDetectorRef){
+
+    this.highestPointLastSession = await this.getHighestPointInLastSession();
+    this.lowestPointLastSession = await this.getlowestPointLastSession();
+    this.elevationChangeLastSession = await this.getElevationChangeInLatestSession();
+
+    this.lowestPointOverall = await this.getlowestPointOverall();
+    if(this.highestPointLastSession > await this.gethighestPointOverall()){
+      await this.sethighestPointOverall(this.highestPointLastSession);
+    }
+    this.highestPointOverall = await this.gethighestPointOverall();
+
+    if(await this.getIsLowestPointSet()==="true")
+    {
+      if (this.lowestPointLastSession < await this.getlowestPointOverall()) {
+        await this.setlowestPointOverall(this.lowestPointLastSession);
+      }
+      this.lowestPointOverall = await this.getlowestPointOverall();
+    }
+    else
+    {
+      if(await this.storageService.getTrackingStatus() ==="true")
+      {
+        await this.setlowestPointOverall(this.highestPointLastSession);
+        await this.setIsLowestPointSet("true");
+        this.lowestPointOverall = await this.getlowestPointOverall();
+      }
+    }
+    if(this.elevationChangeLastSession > await this.gethighestOverallElevationChange())
+    {
+      await this.sethighestOverallElevationChange(this.elevationChangeLastSession);
+    }
+    this.overallElevationChange = await this.gethighestOverallElevationChange();
+
+    cdr.detectChanges();
+  }
 
 }

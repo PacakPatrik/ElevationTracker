@@ -15,13 +15,6 @@ import {SettingsDataService} from "../../services/settings-data-service/settings
 })
 export class StatsTabPage {
   private lastData: { sessionTimeStamps: string[], sessionArray: string[] } = { sessionTimeStamps: [], sessionArray: [] };
-  public highestPointOverall:number = 0;
-  public overallElevationChange:number = 0;
-  public lowestPointOverall:number = 0;
-
-  public highestPointLastSession:number=0;
-  public elevationChangeLastSession:number=0;
-  public lowestPointLastSession:number=0;
 
   constructor(private modalCtrl: ModalController,
                     public storageService: StorageService,
@@ -30,16 +23,7 @@ export class StatsTabPage {
                     public unitService: UnitServiceService,
                     public settingService :SettingsDataService
   ) {
-    this.setDefaults();
-  }
-  async setDefaults() : Promise<void> {
-    this.highestPointOverall = await this.statsService.gethighestPointOverall();
-    this.overallElevationChange = await this.statsService.gethighestOverallElevationChange();
-    this.lowestPointOverall = await this.statsService.getlowestPointOverall();
-
-    this.highestPointLastSession = await this.statsService.getHighestPointInLastSession();
-    this.elevationChangeLastSession = await this.statsService.getElevationChangeInLatestSession();
-    this.lowestPointLastSession = await this.statsService.getlowestPointLastSession();
+    this.statsService.setDefaults();
   }
   async openSettings() {
 
@@ -54,43 +38,7 @@ export class StatsTabPage {
   ionViewDidEnter() {
     this.storageService.getData();
     this.updateChart();
-    this.updateStats();
-  }
-  private async updateStats(){
-
-    this.highestPointLastSession = await this.statsService.getHighestPointInLastSession();
-    this.lowestPointLastSession = await this.statsService.getlowestPointLastSession();
-    this.elevationChangeLastSession = await this.statsService.getElevationChangeInLatestSession();
-
-    this.lowestPointOverall = await this.statsService.getlowestPointOverall();
-    if(this.highestPointLastSession > await this.statsService.gethighestPointOverall()){
-      await this.statsService.sethighestPointOverall(this.highestPointLastSession);
-    }
-    this.highestPointOverall = await this.statsService.gethighestPointOverall();
-
-    if(await this.statsService.getIsLowestPointSet()==="true")
-    {
-          if (this.lowestPointLastSession < await this.statsService.getlowestPointOverall()) {
-              await this.statsService.setlowestPointOverall(this.lowestPointLastSession);
-          }
-          this.lowestPointOverall = await this.statsService.getlowestPointOverall();
-    }
-    else
-    {
-      if(await this.storageService.getTrackingStatus() ==="true")
-      {
-        await this.statsService.setlowestPointOverall(this.highestPointLastSession);
-        await this.statsService.setIsLowestPointSet("true");
-        this.lowestPointOverall = await this.statsService.getlowestPointOverall();
-      }
-    }
-    if(this.elevationChangeLastSession > await this.statsService.gethighestOverallElevationChange())
-    {
-      await this.statsService.sethighestOverallElevationChange(this.elevationChangeLastSession);
-    }
-    this.overallElevationChange = await this.statsService.gethighestOverallElevationChange();
-
-    this.cdr.detectChanges();
+    this.statsService.updateStats(this.cdr);
   }
 
   private updateChart(): void {
